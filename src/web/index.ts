@@ -9,8 +9,8 @@ import * as express from "express";
 import * as cors from "cors";
 import * as helmet from "helmet";
 
-import { loggerMiddleware } from './middlewares/logger'
-import { MainController } from './controllers/main.controller';
+import { loggerMiddleware } from './web/middlewares/logger'
+import { MainController } from './web/controllers/main.controller';
 
 dotenv.config();
 

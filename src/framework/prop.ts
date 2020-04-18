@@ -27,46 +27,8 @@ export function prop(options: PropertyParameter = {}) {
    * @param {string} propertyName Name of the property under decorator
    */
   return (target: any, propertyName: string) => {
-    type T = typeof target;
 
-    let _val = target[propertyName];
+    console.log(Reflect.getOwnMetadata(ReflectKeys.Type, target))
 
-    if (!target['__schema']) {
-      target['__schema'] = {}
-    }
-
-    Object.defineProperty(target['__schema'], propertyName, {
-      value: String,
-      enumerable: true,
-      configurable: true
-    });
-
-    console.log(target['__schema'])
-
-    const constr = Reflect.getMetadata(ReflectKeys.Type, target, propertyName);
-
-    const getter = function () {
-      console.log(`Get: ${propertyName} => ${_val}`);
-      return _val;
-    };
-
-    const setter = function (value: any) {
-      console.log(`Set: ${propertyName} => ${value}`);
-      // if (!(value instanceof constr) && (typeof value !== constr.name.toLocaleLowerCase())) {
-      //   throw new Error(`Failed to set "${propertyName}": ${constr.name} expected, got ${typeof value}`);
-      // }
-      _val = value + ' [PROPR]';
-    };
-
-    // console.log(propertyName, target[propertyName]);
-    // console.log(`_${propertyName}`, target[`_${propertyName}`]);
-    // if (delete target[propertyName]) {
-    // Object.defineProperty(target, propertyName, {
-    //   get: getter,
-    //   set: setter,
-    //   enumerable: true,
-    //   configurable: true
-    // });
-    // }
   }
 }

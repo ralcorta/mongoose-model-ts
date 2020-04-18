@@ -1,7 +1,7 @@
 import * as express from 'express'
 import { Request, Response } from 'express'
 import IControllerBase from '../interfaces/IControllerBase.interface'
-import { Person } from '../models/person'
+import { Person } from '../../models/person'
 
 export class MainController implements IControllerBase {
   public path = '/'
@@ -17,12 +17,8 @@ export class MainController implements IControllerBase {
 
   index = (req: Request, res: Response) => {
     const model = new Person({ name: 'rodrigo', age: 21 });
-    // const model2 = new Person();
 
-    // console.log(model.toObject());
-    // console.log(model);
-    // console.log({ ...model });
-
+    // tslint:disable-next-line: no-console
     console.log({ ...model })
 
     return res.send({
