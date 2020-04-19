@@ -11,6 +11,7 @@ import { MagicProxy } from './utils/proxy';
 import { MagicGetterProxy } from './utils/getter.proxy';
 import { Person } from '../models/person';
 import { Initial } from './constants/initial';
+import * as _ from 'underscore'
 
 const debug = Debug('framework:prop');
 
@@ -87,6 +88,21 @@ export class Model {
   }
 
   /**
+   * Return the Model reference
+   *
+   * @readonly
+   * @private
+   * @static
+   * @type {MongooseModel<Document>}
+   * @memberof Model
+   */
+  private static get _staticModel(): MongooseModel<Document> {
+    const children: object = Reflect.getPrototypeOf(this);
+    console.log(children)
+    return Reflect.getMetadata(ReflectModel, children) as MongooseModel<Document>;
+  }
+
+  /**
    * Parse mongo document to instance of the class
    *
    * @private
@@ -97,8 +113,25 @@ export class Model {
    * @returns {T}
    * @memberof Model
    */
-  private static docToClass<T extends Model>(this: StaticThis<T>, document: Document): T {
-    return new this(document) as T;
+  private static objToClass(obj: object, document: Document): any {
+    const keys = _.keys(obj);
+    const target = _.extend(obj, _.pick(document.toObject(), keys));
+    return target;
+  }
+
+  /**
+   * Parse mongo document to instance of the class
+   *
+   * @private
+   * @static
+   * @template T
+   * @param {StaticThis<T>} this
+   * @param {Document} document
+   * @returns {T}
+   * @memberof Model
+   */
+  private static docToClass(document: Document): any {
+    return new this(document.toObject());
   }
 
   /**
@@ -112,8 +145,8 @@ export class Model {
    * @returns {T[]}
    * @memberof Model
    */
-  private static docsToClass<T extends Model>(this: StaticThis<T>, documents: Document[]): T[] {
-    return documents.map(doc => Model.docToClass(doc) as T);
+  private static docsToClass(documents: Document[]): any[] {
+    return documents.map(doc => Model.docToClass.call(this, doc));
   }
 
   // static create<T>(this: new () => T, data: object): T {
@@ -132,8 +165,7 @@ export class Model {
   public static async create<T extends Model>(this: StaticThis<T>, data: object): Promise<T> {
     try {
       const that = new this(data);
-      // console.log(that instanceof Person);
-      const instance = await that.save();
+      const instance = await that.save.call(that);
       // console.log(instance instanceof Person);
       return instance;
     } catch (err) {
@@ -148,51 +180,31 @@ export class Model {
    * @memberof Model
    */
   public async save(): Promise<this> {
+    const modelObj = new Model();
     try {
-      if (await this.exists(this.id)) {
-        return await this._model.findByIdAndUpdate(this.id, this) as unknown as this;
+      if (await modelObj.exists(this.id)) {
+        const doc = await this._model.findByIdAndUpdate(this.id, this);
+        return Model.objToClass(this, doc);
       } else {
-        console.log({ ...this })
         const doc = await this._model.create({ ...this });
-        const instance = doc.toObject() as this;
-        console.log(instance instanceof Person);
-        return instance;
+        return Model.objToClass(this, doc);
       }
     } catch (err) {
       return Promise.reject(err);
     }
   }
 
-  // public static async create<T extends Model>(this: StaticThis<T>, data: object): Promise<T> {
-  //   try {
-  //     const that = new this(data) as T;
-  //     return that.save();
-  //   } catch (err) {
-  //     return Promise.reject(err);
-  //   }
-  // }
-
-  // public async save(): Promise<this> {
-  //   try {
-  //     return this.getDoc().create(this) as unknown as Promise<this>;
-  //   } catch (err) {
-  //     return Promise.reject(err);
-  //   }
-  // }
-
   /**
    *
    *
    * @private
    * @param {*} key
-   * @returns
+   * @returns {Promise<boolean>}
    * @memberof Model
    */
-  private async exists(key: any) {
+  private async exists(key: any): Promise<boolean> {
     const query: Record<string, any> = {};
-
     query[this._key] = key;
-
     return this._model.exists(query);
   }
 
@@ -220,7 +232,7 @@ export class Model {
       return Promise.reject(err);
     }
 
-    return documents ? Model.docsToClass(documents) as T[] : [];
+    return documents ? Model.docsToClass.call(this, documents) : [];
   }
 
   /**
@@ -249,7 +261,7 @@ export class Model {
       return Promise.reject(err);
     }
 
-    return document ? Model.docToClass(document) as T : null;
+    return document ? Model.docToClass.call(this, document) as T : null;
   }
 
   /**
@@ -278,7 +290,7 @@ export class Model {
       return Promise.reject(err);
     }
 
-    return document ? Model.docToClass(document) as T : null;
+    return document ? Model.docToClass.call(this, document) as T : null;
   }
 
   /**
