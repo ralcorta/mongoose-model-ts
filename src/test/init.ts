@@ -32,15 +32,17 @@ import { Person } from '../models/person'
 
 
   /** FIND */
-  // const encontrados: Person = await Person.findOne();
+  const p: Person = await Person.findOne();
 
-  // console.log(encontrados);
+  console.log(p);
 
   // const p: Person = encontrados ?? new Person();
 
-  // p.name = "Leonardo";
+  p.name = "asdad";
 
-  // // console.log(!!encontrados);
+  await p.save();
 
-  // await p.save();
+  const newP: Person = await Person.findOne();
+
+  console.log(newP)
 })();

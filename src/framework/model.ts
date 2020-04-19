@@ -24,7 +24,7 @@ export class Model {
    * @type {Types.ObjectId}
    * @memberof Model
    */
-  private _id: Types.ObjectId;
+  public _id: Types.ObjectId;
 
   /**
    * Key of collection
@@ -60,7 +60,6 @@ export class Model {
 
     Reflect.defineMetadata(ReflectModel, doc, children);
   }
-
 
   /**
    * Getter for the virtual _id property
@@ -116,7 +115,9 @@ export class Model {
    * @memberof Model
    */
   private static docToClass(document: Document): any {
-    return new this(document.toObject());
+    const instance = new this(document.toObject());
+    instance._id = document._id;
+    return instance
   }
 
   /**
@@ -165,7 +166,7 @@ export class Model {
   public async save(): Promise<this> {
     const modelObj = new Model();
     try {
-      if (await modelObj.exists(this.id)) {
+      if (await modelObj.exists.call(this, this.id)) {
         const doc = await this._model.findByIdAndUpdate(this.id, this);
         return Model.objToClass(this, doc);
       } else {
