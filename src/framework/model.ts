@@ -61,7 +61,7 @@ export abstract class Model {
 
   public async save(): Promise<this> {
     try {
-      const doc = this.getDoc().create(this);
+      return this.getDoc().create(this) as unknown as Promise<this>;
     } catch (err) {
       return Promise.reject(err);
     }
