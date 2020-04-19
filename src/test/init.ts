@@ -1,3 +1,4 @@
+// tslint:disable: no-console
 import * as mongoose from 'mongoose';
 import { Person } from '../models/person'
 
@@ -13,6 +14,22 @@ import { Person } from '../models/person'
     console.log("Error: ", error);
   }
 
-  console.log("Person: ", person);
-  // model.save();
+  console.log(person)
+
+  // const p = await Person.findById(person.id);
+
+  // console.log(p);
+
+
+  // const encontrados: Person = await Person.findOne();
+
+  // console.log(encontrados);
+
+  // const p: Person = encontrados ?? new Person();
+
+  // p.name = "Leonardo";
+
+  // // console.log(!!encontrados);
+
+  // await p.save();
 })();

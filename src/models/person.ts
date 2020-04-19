@@ -3,6 +3,8 @@ import 'reflect-metadata'
 import { prop } from '../framework/prop'
 import { Model } from '../framework/model';
 
+import { MagicProxy } from '../framework//utils/proxy';
+
 export class Person extends Model {
 
   @prop()
