@@ -1,5 +1,8 @@
+import 'reflect-metadata'
+
 import { prop } from '../framework/prop'
-// import { Model } from '../framework/model.decorator';
+import { Model } from '../framework/model';
+import { ReflectSchema } from '../framework/constants/symbols';
 
 /**
  *  Person class
@@ -7,9 +10,14 @@ import { prop } from '../framework/prop'
  * @export
  * @class Person
  */
-export class Person {
+export class Person extends Model {
 
   constructor(data?: { name?: string, age?: number }) {
+    super();
+
+    // const list = Reflect.getOwnMetadata(ReflectSchema, this)
+    // console.log(list);
+
     this.name = data?.name;
     this.age = data?.age;
   }
@@ -17,6 +25,6 @@ export class Person {
   @prop()
   name: string;
 
-  @prop()
+  @prop({ required: false })
   age: number;
 }

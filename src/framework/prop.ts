@@ -1,13 +1,3 @@
-// tslint:disable: no-console
-// tslint:disable-next-line: no-unused-expression
-import Debug from 'debug';
-import { ReflectKeys } from './constants/reflect.keys';
-// import { getMetadata } from 'reflect-metadata'
-import "reflect-metadata"
-import { PropertyParameter } from './types';
-
-const debug = Debug('framework:prop');
-
 /**
  * declare type ClassDecorator = <TFunction extends Function>(target: TFunction) => TFunction | void;
  * declare type PropertyDecorator = (target: Object, propertyKey: string | symbol) => void;
@@ -15,20 +5,52 @@ const debug = Debug('framework:prop');
  * declare type ParameterDecorator = (target: Object, propertyKey: string | symbol, parameterIndex: number) => void;
  */
 
-/**
- * @export
- * @param {Record<string, any>} [options={}]
- * @public
- */
-export function prop(options: PropertyParameter = {}) {
+// tslint:disable: no-console
+// tslint:disable-next-line: no-unused-expression
+import Debug from 'debug';
+import { ReflectKeys } from './constants/reflect.keys';
+import "reflect-metadata"
+import { PropertyParameter, Schema } from './types';
+import { isNullOrUndefined } from 'util';
+import { ReflectSchema } from './constants/symbols';
 
-  /**
-   * @param {any} target Class itself
-   * @param {string} propertyName Name of the property under decorator
-   */
+const debug = Debug('framework:prop');
+
+
+export function prop(options: PropertyParameter = {}): (target: object, propertyName: string) => void {
   return (target: any, propertyName: string) => {
+    const metadata = Reflect.getOwnMetadata(ReflectKeys.Type, target, propertyName);
 
-    console.log(Reflect.getOwnMetadata(ReflectKeys.Type, target))
+    let list: Schema = Reflect.getMetadata(ReflectSchema, target)
 
+    if (isNullOrUndefined(list))
+      list = new Map() as Schema;
+
+    const properties: object = {
+      ...options,
+      type: metadata,
+    }
+
+    list.set(propertyName, properties);
+
+    Reflect.defineMetadata(ReflectSchema, list, target)
+
+    // console.log(list)
+
+    // let _val = target[propertyName];
+
+    // const getter = () => {
+    //   return _val;
+    // };
+    // const setter = (val: any) => {
+    //   _val = `🍦 ${val} 🍦`;
+    // };
+
+    // Object.defineProperty(target, propertyName, {
+    //   get: getter,
+    //   set: setter,
+    //   enumerable: true,
+    //   configurable: true,
+    // });
   }
 }

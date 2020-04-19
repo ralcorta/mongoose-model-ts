@@ -1,5 +1,7 @@
 import * as mongoose from 'mongoose';
 
+export type Schema = Map<string, PropertyParameter>
+
 /**
  * Replicated from mognoose properties
  *
