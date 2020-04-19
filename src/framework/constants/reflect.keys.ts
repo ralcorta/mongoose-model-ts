@@ -29,5 +29,11 @@ export enum ReflectKeys {
    * Storage location for Property list
    * -> Use only for a class
    */
-  Schema = 'tsmodel:schema'
+  Schema = 'tsmodel:schema',
+
+  /**
+   * Storage location for Property list
+   * -> Use only for a class
+   */
+  Model = 'tsmodel:model'
 }
