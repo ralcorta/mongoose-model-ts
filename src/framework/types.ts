@@ -1,6 +1,8 @@
 import * as mongoose from 'mongoose';
 
-export type Schema = Map<string, PropertyParameter>
+export type RecordSchema = Record<string, PropertyParameter>
+
+export type StaticThis<T> = new (...args: any) => T;
 
 /**
  * Replicated from mognoose properties

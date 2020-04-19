@@ -10,7 +10,7 @@
 import Debug from 'debug';
 import { ReflectKeys } from './constants/reflect.keys';
 import "reflect-metadata"
-import { PropertyParameter, Schema } from './types';
+import { PropertyParameter, RecordSchema } from './types';
 import { isNullOrUndefined } from 'util';
 import { ReflectSchema } from './constants/symbols';
 
@@ -21,21 +21,19 @@ export function prop(options: PropertyParameter = {}): (target: object, property
   return (target: any, propertyName: string) => {
     const metadata = Reflect.getOwnMetadata(ReflectKeys.Type, target, propertyName);
 
-    let list: Schema = Reflect.getMetadata(ReflectSchema, target)
+    let list: RecordSchema = Reflect.getMetadata(ReflectSchema, target)
 
     if (isNullOrUndefined(list))
-      list = new Map() as Schema;
+      list = {} as RecordSchema;
 
     const properties: object = {
       ...options,
       type: metadata,
     }
 
-    list.set(propertyName, properties);
+    list[propertyName] = properties;
 
     Reflect.defineMetadata(ReflectSchema, list, target)
-
-    // console.log(list)
 
     // let _val = target[propertyName];
 
