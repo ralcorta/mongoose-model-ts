@@ -88,21 +88,6 @@ export class Model {
   }
 
   /**
-   * Return the Model reference
-   *
-   * @readonly
-   * @private
-   * @static
-   * @type {MongooseModel<Document>}
-   * @memberof Model
-   */
-  private static get _staticModel(): MongooseModel<Document> {
-    const children: object = Reflect.getPrototypeOf(this);
-    console.log(children)
-    return Reflect.getMetadata(ReflectModel, children) as MongooseModel<Document>;
-  }
-
-  /**
    * Parse mongo document to instance of the class
    *
    * @private
@@ -165,9 +150,7 @@ export class Model {
   public static async create<T extends Model>(this: StaticThis<T>, data: object): Promise<T> {
     try {
       const that = new this(data);
-      const instance = await that.save.call(that);
-      // console.log(instance instanceof Person);
-      return instance;
+      return await that.save.call(that);
     } catch (err) {
       return Promise.reject(err);
     }
