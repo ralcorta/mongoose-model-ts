@@ -56,19 +56,9 @@ export  class  Person  extends  Model {
 	age:  number;
 }
 ```
-
-## How it works
+#### How it works
 
 Mongoose TS map the properties of the model and create a schema in the metadata of the class. All is transparent for the developer and for this they don't need get worry about how its work.
-
-
-```mermaid
-graph LR
-A[Class] --> B((Metada))
-B --> D{Cache}
-D --> C(Mapper)
-C --> A
-```
 
 
 ## License
