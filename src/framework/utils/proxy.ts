@@ -1,4 +1,5 @@
-
+// tslint:disable: no-shadowed-variable
+// tslint:disable-next-line: ban-types
 export const MagicProxy = <TFunction extends Function>(target: TFunction): TFunction | void => {
   // A toggle switch for the __isset method
   // Needed to control "prop in instance" inside of getters
@@ -12,7 +13,7 @@ export const MagicProxy = <TFunction extends Function>(target: TFunction): TFunc
     // Wrapped class instance
     const instance = new target(...args)
 
-    // Instance traps 
+    // Instance traps
     const instanceHandler: any = {};
 
     // __get()

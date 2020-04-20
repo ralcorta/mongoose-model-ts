@@ -2,16 +2,13 @@
 // tslint:disable-next-line: no-unused-expression
 import 'reflect-metadata'
 
-import Debug from 'debug';
-import { PropertyParameter, RecordSchema, StaticThis } from './types';
-import { model, Document, Model as MongooseModel, models, Schema, SchemaDefinition, Types, Query } from 'mongoose';
-import { ReflectKeys } from './constants/reflect.keys';
-import { ReflectSchema, ReflectModel, ReflectKey } from './constants/symbols';
-import { MagicProxy } from './utils/proxy';
-import { MagicGetterProxy } from './utils/getter.proxy';
-import { Person } from '../models/person';
-import { Initial } from './constants/initial';
 import * as _ from 'underscore'
+import Debug from 'debug';
+import { RecordSchema, StaticThis } from './types';
+import { model, Document, Model as MongooseModel, models, Schema, SchemaDefinition, Types } from 'mongoose';
+import { ReflectSchema, ReflectModel, ReflectKey } from './constants/symbols';
+import { Initial } from './constants/initial';
+import { DeleteModel } from './interfaces/delete.interface';
 
 const debug = Debug('framework:prop');
 
@@ -27,23 +24,13 @@ export class Model {
   public _id: Types.ObjectId;
 
   /**
-   * Key of collection
-   *
-   * @protected
-   * @type {*}
-   * @memberof Model
-   */
-  protected get _key(): string {
-    const children: object = Reflect.getPrototypeOf(this);
-    return Reflect.getMetadata(ReflectKey, children) as string;
-  };
-
-  /**
    * Creates an instance of Model with the corresponding metadata.
    * @param {...any[]} data
    * @memberof Model
    */
   constructor(...data: any[]) {
+    this._id = Types.ObjectId();
+
     const children: object = Reflect.getPrototypeOf(this);
 
     const schema: RecordSchema = Reflect.getMetadata(ReflectSchema, children);
@@ -60,6 +47,18 @@ export class Model {
 
     Reflect.defineMetadata(ReflectModel, doc, children);
   }
+
+  /**
+   * Key of collection
+   *
+   * @protected
+   * @type {*}
+   * @memberof Model
+   */
+  protected get _key(): string {
+    const children: object = Reflect.getPrototypeOf(this);
+    return Reflect.getMetadata(ReflectKey, children) as string;
+  };
 
   /**
    * Getter for the virtual _id property
@@ -167,8 +166,9 @@ export class Model {
     const modelObj = new Model();
     try {
       if (await modelObj.exists.call(this, this.id)) {
-        const doc = await this._model.findByIdAndUpdate(this.id, this);
-        return Model.objToClass(this, doc);
+        // const doc = await this._model.findByIdAndUpdate(this.id, this);
+        // return Model.objToClass(this, doc);
+        return this.update.call(this);
       } else {
         const doc = await this._model.create({ ...this });
         return Model.objToClass(this, doc);
@@ -179,7 +179,7 @@ export class Model {
   }
 
   /**
-   *
+   *  Check if this document exist in DB by model key
    *
    * @private
    * @param {*} key
@@ -190,6 +190,20 @@ export class Model {
     const query: Record<string, any> = {};
     query[this._key] = key;
     return this._model.exists(query);
+  }
+
+  /**
+   * Get key
+   *
+   * @private
+   * @param {*} key
+   * @returns {object}
+   * @memberof Model
+   */
+  private getQueryKey(key: any): object {
+    const query: Record<string, any> = {};
+    query[this._key] = key;
+    return query;
   }
 
   /**
@@ -235,6 +249,9 @@ export class Model {
     let document: Document;
 
     const child: T = new this();
+
+    await child._model.findById(id)
+
     try {
       document = await child._model
         .findById(id)
@@ -244,6 +261,8 @@ export class Model {
     } catch (err) {
       return Promise.reject(err);
     }
+
+    // console.log("Document: ", document);
 
     return document ? Model.docToClass.call(this, document) as T : null;
   }
@@ -284,14 +303,45 @@ export class Model {
    * @returns {Promise<this>}
    * @memberof Model
    */
-  // public async update(query: object = {}, update: object, options: any = {}): Promise<T> {
-  //   // public async update(data?: object): Promise<this> {
-  //   try {
-  //     return this;
-  //   } catch (err) {
-  //     return Promise.reject(err);
-  //   }
-  // }
+  public async update(): Promise<this> {
+    try {
+      const doc = await this._model.findByIdAndUpdate(this.id, this);
+      return Model.objToClass(this, doc);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  /**
+   * Delete a docuemnt from DB
+   *
+   * @returns {Promise<DeleteModel>}
+   * @memberof Model
+   */
+  public async delete(): Promise<DeleteModel> {
+    try {
+      // const doc = await this._model.findByIdAndUpdate(this.id, this);
+      // return Model.objToClass(this, doc);
+      return await this._model.deleteOne(this.getQueryKey(this.id));
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  /**
+   * Delete many docuemnt from DB
+   *
+   * @returns {Promise<DeleteModel>}
+   * @memberof Model
+   */
+  public static async deleteMany<T extends Model>(this: StaticThis<T>, query: object = {}): Promise<DeleteModel> {
+    try {
+      const that = new this();
+      return await that._model.deleteMany(query);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
 
   // static async _save(properties: {}): Promise<That> {
   //   return new Model(this.doc().create(properties));
