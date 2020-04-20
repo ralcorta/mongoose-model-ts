@@ -134,9 +134,6 @@ export class Model {
     return documents.map(doc => Model.docToClass.call(this, doc));
   }
 
-  // static create<T>(this: new () => T, data: object): T {
-  // this: new (...data: any[]) => T,
-
   /**
    * Create a register of the document in the database and return the instance
    *
@@ -250,7 +247,7 @@ export class Model {
 
     const child: T = new this();
 
-    await child._model.findById(id)
+    // await child._model.findById(id)
 
     try {
       document = await child._model
@@ -261,8 +258,6 @@ export class Model {
     } catch (err) {
       return Promise.reject(err);
     }
-
-    // console.log("Document: ", document);
 
     return document ? Model.docToClass.call(this, document) as T : null;
   }
@@ -342,13 +337,4 @@ export class Model {
       return Promise.reject(err);
     }
   }
-
-  // static async _save(properties: {}): Promise<That> {
-  //   return new Model(this.doc().create(properties));
-  // }
-
-  // private static doc(): MongooseModel<Document> {
-  //   const children: object = Reflect.getPrototypeOf(this);
-  //   return model(children.constructor.name);
-  // }
 }
