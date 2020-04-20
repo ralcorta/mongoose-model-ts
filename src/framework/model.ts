@@ -12,6 +12,16 @@ import { DeleteModel } from './interfaces/delete.interface';
 
 const debug = Debug('framework:prop');
 
+/**
+ * Future features:
+ *  - Plugins
+ *  - Virtuals
+ *  - Schema Methods
+ *  - Autopopulate (Refs)
+ *  - Hooks
+ *  - Properies edited flag
+ */
+
 export class Model {
 
   /**
@@ -38,7 +48,15 @@ export class Model {
     /// USE models?
     let doc: MongooseModel<Document>;
     try {
-      doc = model(children.constructor.name, new Schema(schema as SchemaDefinition));
+      const schemaMongoose = new Schema(schema as SchemaDefinition);
+
+      // schemaMongoose.methods = Reflect.getMetadata(ReflectMethods, children);
+
+      // schemaMongoose.pre('save', Reflect.getMetadata(ReflectPre, children) as Function)
+
+      // schemaMongoose.post('save', Reflect.getMetadata(ReflectPost, children) as Function)
+
+      doc = model(children.constructor.name, schemaMongoose);
     } catch {
       doc = model(children.constructor.name);
     }
@@ -116,7 +134,7 @@ export class Model {
   private static docToClass(document: Document): any {
     const instance = new this(document.toObject());
     instance._id = document._id;
-    return instance
+    return instance;
   }
 
   /**
@@ -298,9 +316,9 @@ export class Model {
    * @returns {Promise<this>}
    * @memberof Model
    */
-  public async update(): Promise<this> {
+  public async update(parameters?: object): Promise<this> {
     try {
-      const doc = await this._model.findByIdAndUpdate(this.id, this);
+      const doc = await this._model.findByIdAndUpdate(this.id, parameters ?? this);
       return Model.objToClass(this, doc);
     } catch (err) {
       return Promise.reject(err);
