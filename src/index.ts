@@ -1,6 +1,7 @@
 // tslint:disable: no-console
 import * as mongoose from 'mongoose';
 import { Person } from './models/person'
+import { Dog } from './models/dog';
 
 async function create() {
   const model = new Person({ name: 'rodrigo', age: 21 });
@@ -97,6 +98,19 @@ async function deleteManyModel() {
   }
 }
 
+async function ref() {
+  try {
+
+    const person = new Person({ name: 'Rodrigo', dog: new Dog({ name: 'Yeny' }) });
+
+    console.log(person);
+
+  } catch (error) {
+    console.log("Error: ", error);
+    return;
+  }
+}
+
 (async () => {
   await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "mongoose-model-ts" });
 
@@ -105,6 +119,12 @@ async function deleteManyModel() {
   //   await save();
   // }
 
-  console.log(await deleteManyModel());
+  // console.log(await deleteManyModel());
 
+  // await ref();
+
+  const person1 = new Person({ name: 'Rodrigo', dog: new Dog({ name: 'Yeny' }) });
+  // const person2 = new Person({ name: 'Leonardo', dog: new Dog({ name: 'Yeny' }) });
+
+  console.log(person1)
 })();

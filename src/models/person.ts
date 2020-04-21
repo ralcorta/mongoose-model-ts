@@ -2,8 +2,8 @@ import 'reflect-metadata'
 
 import { prop } from '../framework/prop'
 import { Model } from '../framework/model';
-
-import { MagicProxy } from '../framework//utils/proxy';
+import { Dog } from './dog';
+import { Ref } from '../framework/ref';
 
 export class Person extends Model {
 
@@ -13,9 +13,7 @@ export class Person extends Model {
   @prop({ required: false })
   age: number;
 
-  constructor(data?: { name?: string, age?: number }) {
-    super();
-    this.name = data?.name;
-    this.age = data?.age;
-  }
+  @prop({ ref: Dog })
+  dog: Ref<Dog>;
+
 }

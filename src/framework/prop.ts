@@ -7,48 +7,54 @@
 
 // tslint:disable: no-console
 // tslint:disable-next-line: no-unused-expression
+import "reflect-metadata"
+
 import Debug from 'debug';
 import { ReflectKeys } from './constants/reflect.keys';
-import "reflect-metadata"
 import { PropertyParameter, RecordSchema } from './types';
 import { isNullOrUndefined } from 'util';
 import { ReflectSchema } from './constants/symbols';
+import { Types } from "mongoose";
+import { isObject } from "underscore";
 
 const debug = Debug('framework:prop');
 
-
 export function prop(options: PropertyParameter = {}): (target: object, propertyName: string) => void {
-  return (target: any, propertyName: string) => {
-    const metadata = Reflect.getOwnMetadata(ReflectKeys.Type, target, propertyName);
 
-    let list: RecordSchema = Reflect.getMetadata(ReflectSchema, target)
+  const getProperties = (type: Record<string, any>, params: PropertyParameter): PropertyParameter => {
+    const properties: PropertyParameter = {
+      ...params,
+      type,
+    };
+
+    if (params.ref) {
+      properties.ref = isObject(params.ref) ? params?.ref?.prototype?.constructor?.name : params.ref;
+      properties.type = properties.refType ?? Types.ObjectId;
+    }
+
+    if (params.refType) {
+      properties.type = properties.refType ?? Types.ObjectId;
+    }
+
+    return properties;
+  }
+
+  const autopopulateMethodKey = (name: string): string => {
+    return `${ReflectKeys.AutopopulateMethod}:${name}`;
+  }
+
+  return (target: any, propertyName: string) => {
+    const type = Reflect.getOwnMetadata(ReflectKeys.Type, target, propertyName);
+
+    const properties: PropertyParameter = getProperties(type, options);
+
+    let list: RecordSchema = Reflect.getMetadata(ReflectSchema, target);
 
     if (isNullOrUndefined(list))
       list = {} as RecordSchema;
 
-    const properties: object = {
-      ...options,
-      type: metadata,
-    }
-
     list[propertyName] = properties;
 
-    Reflect.defineMetadata(ReflectSchema, list, target)
-
-    // let _val = target[propertyName];
-
-    // const getter = () => {
-    //   return _val;
-    // };
-    // const setter = (val: any) => {
-    //   _val = `🍦 ${val} 🍦`;
-    // };
-
-    // Object.defineProperty(target, propertyName, {
-    //   get: getter,
-    //   set: setter,
-    //   enumerable: true,
-    //   configurable: true,
-    // });
+    Reflect.defineMetadata(ReflectSchema, list, target);
   }
 }

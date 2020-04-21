@@ -4,8 +4,13 @@
 export enum ReflectKeys {
 
   /** Get the Typescript assigned Type at runtime */
-
   Type = 'design:type',
+
+  /**
+   * Store method to autopopulate
+   * -> Use only for methods
+   */
+  AutopopulateMethod = 'tsmodel:autopopulatemethod',
 
   /**
    * "@prop" Cache

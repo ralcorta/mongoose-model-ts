@@ -9,6 +9,7 @@ import { model, Document, Model as MongooseModel, models, Schema, SchemaDefiniti
 import { ReflectSchema, ReflectModel, ReflectKey } from './constants/symbols';
 import { Initial } from './constants/initial';
 import { DeleteModel } from './interfaces/delete.interface';
+import { Proxify } from './proxy';
 
 const debug = Debug('framework:prop');
 
@@ -22,7 +23,7 @@ const debug = Debug('framework:prop');
  *  - Properies edited flag
  */
 
-export class Model {
+export class Model extends Proxify {
 
   /**
    * Virutal ID of document
@@ -38,32 +39,43 @@ export class Model {
    * @param {...any[]} data
    * @memberof Model
    */
-  constructor(...data: any[]) {
+  constructor(data: object = {}) {
+    super();
+
     this._id = Types.ObjectId();
+
+    Model.assign.call(this, data);
 
     const children: object = Reflect.getPrototypeOf(this);
 
     const schema: RecordSchema = Reflect.getMetadata(ReflectSchema, children);
 
-    /// USE models?
-    let doc: MongooseModel<Document>;
-    try {
-      const schemaMongoose = new Schema(schema as SchemaDefinition);
+    const schemaMongoose = new Schema(schema as SchemaDefinition);
 
-      // schemaMongoose.methods = Reflect.getMetadata(ReflectMethods, children);
+    // schemaMongoose.methods = Reflect.getMetadata(ReflectMethods, children);
 
-      // schemaMongoose.pre('save', Reflect.getMetadata(ReflectPre, children) as Function)
+    // schemaMongoose.pre('save', Reflect.getMetadata(ReflectPre, children) as Function)
 
-      // schemaMongoose.post('save', Reflect.getMetadata(ReflectPost, children) as Function)
+    // schemaMongoose.post('save', Reflect.getMetadata(ReflectPost, children) as Function)
 
-      doc = model(children.constructor.name, schemaMongoose);
-    } catch {
-      doc = model(children.constructor.name);
-    }
+    const doc: MongooseModel<Document> = models[children.constructor.name]
+      ? model(children.constructor.name)
+      : model(children.constructor.name, schemaMongoose);
 
     Reflect.defineMetadata(ReflectKey, Initial.Key, children);
 
     Reflect.defineMetadata(ReflectModel, doc, children);
+  }
+
+  /**
+   * Assing all properties to object when this is created.
+   *
+   * @private
+   * @param {object} properties
+   * @memberof Model
+   */
+  private static assign(properties: object): void {
+    Object.assign(this, properties);
   }
 
   /**
