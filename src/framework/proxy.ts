@@ -1,12 +1,5 @@
-import { Types } from "mongoose";
-import { Ref } from "./ref";
-
-export enum ReflectKeys {
-
-  /** Get the Typescript assigned Type at runtime */
-  Type = 'design:type',
-
-}
+import { ReflectSchema, ReflectDoc, ReflectModel } from './constants/symbols';
+import { Document, Model as MongooseModel } from 'mongoose';
 
 /**
  * A Proxy for all getters of model
@@ -19,18 +12,33 @@ export class Proxify {
     return new Proxy(this, this);
   }
 
-  public get(target: any, prop: string) {
+  public get(target: any, prop: string): Promise<any> {
     if (this.hasOwnProperty(prop)) {
-      // DO STUFFS
+      const schema = Reflect.getMetadata(ReflectSchema, target);
+
+      if (schema[prop].ref) {
+        // MongooseModel<Document>
+        const model = Reflect.getMetadata(ReflectModel, target);
+
+        // console.log(schema[prop].ref);
+        // console.log(doc.populate(schema[prop].ref));
+        // (async () => {
+        //   console.log(prop, target[prop]);
+        //   console.log(await model.populate(target[prop]));
+        // })()
+
+        return target[prop]// = model.findById(target[prop]).exec();
+      }
     }
 
+    return target[prop];
   }
 
   set(target: any, prop: string, value: any, receiver: any): boolean {
-    const type = Reflect.getOwnMetadata(ReflectKeys.Type, target, prop);
+    const type = value.constructor
 
-    console.log(type);
+    target[prop] = value;
 
-    return target[prop] = value;
+    return true;
   }
 }

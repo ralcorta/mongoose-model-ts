@@ -6,10 +6,13 @@ import * as _ from 'underscore'
 import Debug from 'debug';
 import { RecordSchema, StaticThis } from './types';
 import { model, Document, Model as MongooseModel, models, Schema, SchemaDefinition, Types } from 'mongoose';
-import { ReflectSchema, ReflectModel, ReflectKey } from './constants/symbols';
+import { ReflectSchema, ReflectModel, ReflectKey, ReflectDoc } from './constants/symbols';
 import { Initial } from './constants/initial';
 import { DeleteModel } from './interfaces/delete.interface';
 import { Proxify } from './proxy';
+import { ReflectKeys } from './constants/reflect.keys';
+import { Ref } from './ref';
+import { isEqual } from 'underscore';
 
 const debug = Debug('framework:prop');
 
@@ -146,6 +149,17 @@ export class Model extends Proxify {
   private static docToClass(document: Document): any {
     const instance = new this(document.toObject());
     instance._id = document._id;
+    Reflect.defineMetadata(ReflectDoc, document, instance);
+    // console.log("Doc: ", Reflect.getMetadata(ReflectDoc, instance));
+    // const keys = Object.keys(instance);
+    // for (const key of keys) {
+    //   const type = Reflect.getOwnMetadata(ReflectKeys.Type, instance.constructor.prototype, key);
+    //   if (isEqual(type, Ref)) {
+    //     // Object.defineProperty(instance, key, Ref.generate(type));
+    //     // (instance as any)[key] = Ref.generate(type)
+    //     // console.log((instance as any)[key] instanceof Ref);
+    //   }
+    // }
     return instance;
   }
 

@@ -15,7 +15,9 @@ import { PropertyParameter, RecordSchema } from './types';
 import { isNullOrUndefined } from 'util';
 import { ReflectSchema } from './constants/symbols';
 import { Types } from "mongoose";
-import { isObject } from "underscore";
+import { isObject, isEqual } from "underscore";
+import { Ref } from "./ref";
+import { RefCache } from "./interfaces/ref.cache.interface";
 
 const debug = Debug('framework:prop');
 
@@ -37,10 +39,6 @@ export function prop(options: PropertyParameter = {}): (target: object, property
     }
 
     return properties;
-  }
-
-  const autopopulateMethodKey = (name: string): string => {
-    return `${ReflectKeys.AutopopulateMethod}:${name}`;
   }
 
   return (target: any, propertyName: string) => {

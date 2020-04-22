@@ -114,17 +114,24 @@ async function ref() {
 (async () => {
   await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "mongoose-model-ts" });
 
-  // await deleteModel();
-  // for (let i = 0; i < 100; i++) {
-  //   await save();
+  // const dog = new Dog({ name: 'Yeny' });
+
+  // await dog.save();
+
+  // const model = new Person({ name: 'rodrigo', age: 21, dog });
+
+  // let person;
+  // try {
+  //   person = await model.save();// await Person.create({ name: 'rodrigo', age: 21 });
+  // } catch (error) {
+  //   console.log("Error: ", error);
+  //   return;
   // }
 
-  // console.log(await deleteManyModel());
+  // console.log(person);
 
-  // await ref();
+  const p = await Person.findOne();
 
-  const person1 = new Person({ name: 'Rodrigo', dog: new Dog({ name: 'Yeny' }) });
-  // const person2 = new Person({ name: 'Leonardo', dog: new Dog({ name: 'Yeny' }) });
+  console.log(await p.dog);
 
-  console.log(person1)
 })();

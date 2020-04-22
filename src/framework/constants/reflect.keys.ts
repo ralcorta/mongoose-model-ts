@@ -25,12 +25,6 @@ export enum ReflectKeys {
   ModelOptions = 'tsmodel:options',
 
   /**
-   * Storage location for Indexes
-   * -> Use only for a class
-   */
-  Index = 'tsmodel:indexes',
-
-  /**
    * Storage location for Property list
    * -> Use only for a class
    */
@@ -41,6 +35,12 @@ export enum ReflectKeys {
    * -> Use only for a class
    */
   Model = 'tsmodel:model',
+
+  /**
+   * Storage location for Property list
+   * -> Use only for a class
+   */
+  Doc = 'tsmodel:doc',
 
   /**
    * Storage Key Property of user (like _id)
