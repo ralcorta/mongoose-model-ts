@@ -1,5 +1,9 @@
 import { ReflectSchema, ReflectDoc, ReflectModel } from './constants/symbols';
-import { Document, Model as MongooseModel } from 'mongoose';
+import { Document, Model as MongooseModel, model } from 'mongoose';
+import { Deasync } from './utils/deasync';
+import { ReflectKeys } from './constants/reflect.keys';
+import { Person } from '../models/person';
+import { ObjectFactory } from './utils/class.instanciator';
 
 /**
  * A Proxy for all getters of model
@@ -15,19 +19,21 @@ export class Proxify {
   public get(target: any, prop: string): Promise<any> {
     if (this.hasOwnProperty(prop)) {
       const schema = Reflect.getMetadata(ReflectSchema, target);
+      if (schema[prop]?.ref) {
+        const modelParent: MongooseModel<Document> = Reflect.getMetadata(ReflectModel, target);
 
-      if (schema[prop].ref) {
-        // MongooseModel<Document>
-        const model = Reflect.getMetadata(ReflectModel, target);
+        // let res = Object.create((global as any)[schema[prop].ref].prototype);
+        var res: any = ObjectFactory.create(schema[prop].ref);
 
-        // console.log(schema[prop].ref);
-        // console.log(doc.populate(schema[prop].ref));
-        // (async () => {
-        //   console.log(prop, target[prop]);
-        //   console.log(await model.populate(target[prop]));
-        // })()
+        console.log(res)
 
-        return target[prop]// = model.findById(target[prop]).exec();
+        const modelCaller = model(schema[prop]?.ref);
+
+        const result = Deasync.execCb.call(modelCaller, modelParent.findById, target[prop]);
+
+        // docToClass
+        // console.log("Shit?", Model.docToClass.call());
+        return result// = model.findById(target[prop]).exec();
       }
     }
 

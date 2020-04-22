@@ -16,9 +16,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/deasync": "^0.1.0",
     "@types/debug": "^4.1.5",
     "concurrently": "^3.5.1",
     "cors": "^2.8.5",
+    "deasync": "^0.1.19",
+    "deasync-promise": "^1.0.1",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "helmet": "^3.22.0",

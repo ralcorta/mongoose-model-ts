@@ -5,7 +5,7 @@ import 'reflect-metadata'
 import * as _ from 'underscore'
 import Debug from 'debug';
 import { RecordSchema, StaticThis } from './types';
-import { model, Document, Model as MongooseModel, models, Schema, SchemaDefinition, Types } from 'mongoose';
+import { model, Document, Model as MongooseModel, models, Schema, SchemaDefinition, Types, MongooseDocument } from 'mongoose';
 import { ReflectSchema, ReflectModel, ReflectKey, ReflectDoc } from './constants/symbols';
 import { Initial } from './constants/initial';
 import { DeleteModel } from './interfaces/delete.interface';
@@ -13,6 +13,7 @@ import { Proxify } from './proxy';
 import { ReflectKeys } from './constants/reflect.keys';
 import { Ref } from './ref';
 import { isEqual } from 'underscore';
+import { entity } from './entity';
 
 const debug = Debug('framework:prop');
 
@@ -25,7 +26,6 @@ const debug = Debug('framework:prop');
  *  - Hooks
  *  - Properies edited flag
  */
-
 export class Model extends Proxify {
 
   /**
@@ -51,23 +51,15 @@ export class Model extends Proxify {
 
     const children: object = Reflect.getPrototypeOf(this);
 
-    const schema: RecordSchema = Reflect.getMetadata(ReflectSchema, children);
+    // const schema: RecordSchema = Reflect.getMetadata(ReflectSchema, children);
 
-    const schemaMongoose = new Schema(schema as SchemaDefinition);
+    // const schemaMongoose = new Schema(schema as SchemaDefinition);
 
-    // schemaMongoose.methods = Reflect.getMetadata(ReflectMethods, children);
-
-    // schemaMongoose.pre('save', Reflect.getMetadata(ReflectPre, children) as Function)
-
-    // schemaMongoose.post('save', Reflect.getMetadata(ReflectPost, children) as Function)
-
-    const doc: MongooseModel<Document> = models[children.constructor.name]
-      ? model(children.constructor.name)
-      : model(children.constructor.name, schemaMongoose);
+    // const doc: MongooseModel<Document> = models[children.constructor.name]
+    //   ? model(children.constructor.name)
+    //   : model(children.constructor.name, schemaMongoose);
 
     Reflect.defineMetadata(ReflectKey, Initial.Key, children);
-
-    Reflect.defineMetadata(ReflectModel, doc, children);
   }
 
   /**
@@ -114,8 +106,9 @@ export class Model extends Proxify {
    * @memberof Model
    */
   private get _model(): MongooseModel<Document> {
-    const children: object = Reflect.getPrototypeOf(this);
-    return Reflect.getMetadata(ReflectModel, children) as MongooseModel<Document>;
+    // const children: object = Reflect.getPrototypeOf(this);
+    // console.log(Reflect.getMetadata(ReflectModel, children));
+    return Reflect.getMetadata(ReflectModel, this) as MongooseModel<Document>;
   }
 
   /**
@@ -230,6 +223,7 @@ export class Model extends Proxify {
   private async exists(key: any): Promise<boolean> {
     const query: Record<string, any> = {};
     query[this._key] = key;
+    // console.log(this._model);
     return this._model.exists(query);
   }
 

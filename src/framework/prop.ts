@@ -9,17 +9,12 @@
 // tslint:disable-next-line: no-unused-expression
 import "reflect-metadata"
 
-import Debug from 'debug';
 import { ReflectKeys } from './constants/reflect.keys';
 import { PropertyParameter, RecordSchema } from './types';
 import { isNullOrUndefined } from 'util';
 import { ReflectSchema } from './constants/symbols';
 import { Types } from "mongoose";
-import { isObject, isEqual } from "underscore";
-import { Ref } from "./ref";
-import { RefCache } from "./interfaces/ref.cache.interface";
-
-const debug = Debug('framework:prop');
+import { isObject, property } from "underscore";
 
 export function prop(options: PropertyParameter = {}): (target: object, propertyName: string) => void {
 
@@ -42,6 +37,7 @@ export function prop(options: PropertyParameter = {}): (target: object, property
   }
 
   return (target: any, propertyName: string) => {
+    console.log(target)
     const type = Reflect.getOwnMetadata(ReflectKeys.Type, target, propertyName);
 
     const properties: PropertyParameter = getProperties(type, options);
