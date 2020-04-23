@@ -1,7 +1,7 @@
 // tslint:disable: no-console
 import * as mongoose from 'mongoose';
-import { Person } from './models/person'
-import { Dog } from './models/dog';
+import { Person } from './test/person'
+import { Dog } from './test/dog';
 import { resolve } from 'path';
 import { runLoopOnce } from 'deasync';
 import deasync = require('deasync');
@@ -41,10 +41,15 @@ async function save() {
   const p = await Person.findById(person.id);
 
   console.log("Found in DB: ", p);
+
+  return p;
 }
 
 async function updateWithSave() {
-  const p = await Person.findOne({});
+  let p = await Person.findOne({});
+
+  if (!p)
+    p = await save();
 
   p.name = "CARLOS [Editado2]";
 
@@ -117,9 +122,13 @@ async function ref() {
 (async () => {
   await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "mongoose-model-ts" });
 
-  const p = await Person.findOne();
-
-  console.log(p.dog.id)
+  // create();
+  // save();
+  // updateWithSave();
+  // update();
+  // deleteModel();
+  // deleteManyModel();
+  // ref();
 
 
 })();
