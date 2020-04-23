@@ -3,26 +3,26 @@ import * as deasync from 'deasync';
 import { model } from 'mongoose';
 
 export class Deasync {
-  // public static exec(promise: any): any {
-  //   let result: any;
-  //   let error: Error;
-  //   let done = false;
+  public static execPromise(promise: any): any {
+    let result: any;
+    let error: Error;
+    let done = false;
 
-  //   promise.then((res: any) => { result = res })
-  //     .catch((err: any) => { error = err })
-  //     .finally(() => {
-  //       done = true;
-  //     })
+    promise.then((res: any) => { result = res })
+      .catch((err: any) => { error = err })
+      .finally(() => {
+        done = true;
+      })
 
-  //   while (!done) {
-  //     runLoopOnce();
-  //   }
+    while (!done) {
+      runLoopOnce();
+    }
 
-  //   if (error)
-  //     throw error;
+    if (error)
+      throw error;
 
-  //   return result;
-  // }
+    return result;
+  }
 
   public static execCb(fnPointer: Function, ...parameters: any): any {
     var ret: any = undefined;

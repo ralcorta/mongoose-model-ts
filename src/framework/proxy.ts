@@ -1,10 +1,7 @@
-import { ReflectSchema, ReflectDoc, ReflectModel } from './constants/symbols';
+import { ReflectSchema, ReflectModel } from './constants/symbols';
 import { Document, Model as MongooseModel, model } from 'mongoose';
 import { Deasync } from './utils/deasync';
 import { ReflectKeys } from './constants/reflect.keys';
-import { Person } from '../models/person';
-import { RecordSchema } from './types';
-import { Model } from './model';
 
 /**
  * A Proxy for all getters of model
@@ -37,8 +34,7 @@ export class Proxify {
     return target[prop];
   }
 
-  set(target: any, prop: string, value: any, receiver: any): boolean {
-    const type = value.constructor
+  set(target: any, prop: string, value: any): boolean {
 
     target[prop] = value;
 

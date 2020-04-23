@@ -3,7 +3,6 @@
 import 'reflect-metadata'
 
 import * as _ from 'underscore'
-import Debug from 'debug';
 import { StaticThis } from './types';
 import { Document, Model as MongooseModel, Types } from 'mongoose';
 import { ReflectModel, ReflectKey, ReflectDoc } from './constants/symbols';
@@ -17,7 +16,7 @@ import { Proxify } from './proxy';
  *  - Plugins
  *  - Virtuals
  *  - Schema Methods
- *  - Autopopulate (Refs)
+ *  - Autopopulate (Refs) -> FINISHED
  *  - Hooks
  *  - Properies edited flag
  */
@@ -45,10 +44,6 @@ export class Model extends Proxify {
     Model.assign.call(this, data);
 
     const children: object = Reflect.getPrototypeOf(this);
-
-    // const schema: RecordSchema = Reflect.getMetadata(ReflectSchema, children);
-
-    // const schemaMongoose = new Schema(schema as SchemaDefinition);
 
     Reflect.defineMetadata(ReflectKey, Initial.Key, children);
   }
@@ -97,8 +92,6 @@ export class Model extends Proxify {
    * @memberof Model
    */
   private get _model(): MongooseModel<Document> {
-    // const children: object = Reflect.getPrototypeOf(this);
-    // console.log(Reflect.getMetadata(ReflectModel, children));
     return Reflect.getMetadata(ReflectModel, this) as MongooseModel<Document>;
   }
 
@@ -134,16 +127,6 @@ export class Model extends Proxify {
     const instance = new this(document.toObject());
     instance._id = document._id;
     Reflect.defineMetadata(ReflectDoc, document, instance);
-    // console.log("Doc: ", Reflect.getMetadata(ReflectDoc, instance));
-    // const keys = Object.keys(instance);
-    // for (const key of keys) {
-    //   const type = Reflect.getOwnMetadata(ReflectKeys.Type, instance.constructor.prototype, key);
-    //   if (isEqual(type, Ref)) {
-    //     // Object.defineProperty(instance, key, Ref.generate(type));
-    //     // (instance as any)[key] = Ref.generate(type)
-    //     // console.log((instance as any)[key] instanceof Ref);
-    //   }
-    // }
     return instance;
   }
 
@@ -191,8 +174,6 @@ export class Model extends Proxify {
     const modelObj = new Model();
     try {
       if (await modelObj.exists.call(this, this.id)) {
-        // const doc = await this._model.findByIdAndUpdate(this.id, this);
-        // return Model.objToClass(this, doc);
         return this.update.call(this);
       } else {
         const doc = await this._model.create({ ...this });
@@ -214,7 +195,6 @@ export class Model extends Proxify {
   private async exists(key: any): Promise<boolean> {
     const query: Record<string, any> = {};
     query[this._key] = key;
-    // console.log(this._model);
     return this._model.exists(query);
   }
 
@@ -327,9 +307,9 @@ export class Model extends Proxify {
    * @returns {Promise<this>}
    * @memberof Model
    */
-  public async update(parameters?: object): Promise<this> {
+  public async update(data?: object): Promise<this> {
     try {
-      const doc = await this._model.findByIdAndUpdate(this.id, parameters ?? this);
+      const doc = await this._model.findByIdAndUpdate(this.id, data ?? this);
       return Model.objToClass(this, doc);
     } catch (err) {
       return Promise.reject(err);
@@ -344,8 +324,6 @@ export class Model extends Proxify {
    */
   public async delete(): Promise<DeleteModel> {
     try {
-      // const doc = await this._model.findByIdAndUpdate(this.id, this);
-      // return Model.objToClass(this, doc);
       return await this._model.deleteOne(this.getQueryKey(this.id));
     } catch (err) {
       return Promise.reject(err);

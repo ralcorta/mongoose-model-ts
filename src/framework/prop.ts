@@ -14,7 +14,7 @@ import { PropertyParameter, RecordSchema } from './types';
 import { isNullOrUndefined } from 'util';
 import { ReflectSchema } from './constants/symbols';
 import { Types } from "mongoose";
-import { isObject, property } from "underscore";
+import { isObject } from "underscore";
 
 export function prop(options: PropertyParameter = {}): (target: object, propertyName: string) => void {
 
