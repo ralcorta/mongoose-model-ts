@@ -37,7 +37,6 @@ export function prop(options: PropertyParameter = {}): (target: object, property
   }
 
   return (target: any, propertyName: string) => {
-    console.log(target)
     const type = Reflect.getOwnMetadata(ReflectKeys.Type, target, propertyName);
 
     const properties: PropertyParameter = getProperties(type, options);

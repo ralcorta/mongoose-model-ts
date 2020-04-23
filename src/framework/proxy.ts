@@ -3,7 +3,8 @@ import { Document, Model as MongooseModel, model } from 'mongoose';
 import { Deasync } from './utils/deasync';
 import { ReflectKeys } from './constants/reflect.keys';
 import { Person } from '../models/person';
-import { ObjectFactory } from './utils/class.instanciator';
+import { RecordSchema } from './types';
+import { Model } from './model';
 
 /**
  * A Proxy for all getters of model
@@ -22,18 +23,14 @@ export class Proxify {
       if (schema[prop]?.ref) {
         const modelParent: MongooseModel<Document> = Reflect.getMetadata(ReflectModel, target);
 
-        // let res = Object.create((global as any)[schema[prop].ref].prototype);
-        var res: any = ObjectFactory.create(schema[prop].ref);
-
-        console.log(res)
-
         const modelCaller = model(schema[prop]?.ref);
 
         const result = Deasync.execCb.call(modelCaller, modelParent.findById, target[prop]);
 
-        // docToClass
         // console.log("Shit?", Model.docToClass.call());
-        return result// = model.findById(target[prop]).exec();
+        const type = Reflect.getOwnMetadata(ReflectKeys.Type, target.constructor.prototype, prop);
+
+        return type.docToClass.call(type, result);
       }
     }
 

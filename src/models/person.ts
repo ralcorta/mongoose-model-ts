@@ -3,7 +3,6 @@ import 'reflect-metadata'
 import { prop } from '../framework/prop'
 import { Model } from '../framework/model';
 import { Dog } from './dog';
-import { Ref } from '../framework/ref';
 import { entity } from '../framework/entity';
 
 @entity
@@ -16,6 +15,6 @@ export class Person extends Model {
   age: number;
 
   @prop({ ref: Dog })
-  dog: Ref<Dog>;
+  dog: Dog;
 
 }

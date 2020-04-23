@@ -4,18 +4,13 @@ import 'reflect-metadata'
 
 import * as _ from 'underscore'
 import Debug from 'debug';
-import { RecordSchema, StaticThis } from './types';
-import { model, Document, Model as MongooseModel, models, Schema, SchemaDefinition, Types, MongooseDocument } from 'mongoose';
-import { ReflectSchema, ReflectModel, ReflectKey, ReflectDoc } from './constants/symbols';
+import { StaticThis } from './types';
+import { Document, Model as MongooseModel, Types } from 'mongoose';
+import { ReflectModel, ReflectKey, ReflectDoc } from './constants/symbols';
 import { Initial } from './constants/initial';
 import { DeleteModel } from './interfaces/delete.interface';
 import { Proxify } from './proxy';
-import { ReflectKeys } from './constants/reflect.keys';
-import { Ref } from './ref';
-import { isEqual } from 'underscore';
-import { entity } from './entity';
 
-const debug = Debug('framework:prop');
 
 /**
  * Future features:
@@ -54,10 +49,6 @@ export class Model extends Proxify {
     // const schema: RecordSchema = Reflect.getMetadata(ReflectSchema, children);
 
     // const schemaMongoose = new Schema(schema as SchemaDefinition);
-
-    // const doc: MongooseModel<Document> = models[children.constructor.name]
-    //   ? model(children.constructor.name)
-    //   : model(children.constructor.name, schemaMongoose);
 
     Reflect.defineMetadata(ReflectKey, Initial.Key, children);
   }

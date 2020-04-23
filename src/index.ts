@@ -117,76 +117,9 @@ async function ref() {
 (async () => {
   await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "mongoose-model-ts" });
 
-  // const dog = new Dog({ name: 'Yeny' });
-
-  // // await dog.save();
-
-  // const model = new Person({ name: 'rodrigo', age: 21, dog });
-
-  // console.log(await model.save());
-  // let person;
-  // try {
-  //   person = await model.save();// await Person.create({ name: 'rodrigo', age: 21 });
-  // } catch (error) {
-  //   console.log("Error: ", error);
-  //   return;
-  // }
-
-  // console.log(person);
-
-  /** TRY ASYNC */
-  // var result: any;
-  // var error: Error;
-  // var done = false;
-
-  // const p = Person.findOne().then((res: any) => { console.log("Trajo algo: ", res); result = res; done = true })
-  //   .catch((err: any) => { console.log("Error: ", err); error = err })
-  //   .finally(() => {
-  //     console.log("Fin.");
-  //     done = true;
-  //   });
-
-  // // p.
-
-  // let i = 0
-  // while (!done && i < 20) {
-  //   runLoopOnce();
-  //   i++;
-  //   // deasync.loopWhile(() => { i++; /*console.log(done)*/; return !done && i < 1 });
-  // }
-
-  // if (error)
-  //   throw error;
-
-  // console.log(`Result: (${done})`, result);
-
-  /** TRY GETTER */
   const p = await Person.findOne();
-  console.log(p.dog)
 
+  console.log(p.dog.id)
 
-  /** TRY MORE */
-  // const promiseWhichWillBeRejected = new Promise((resolv, reject) => {
-  //   console.log("Promeza rechazada...")
-  //   reject("OHH");
-  // })
-
-  // const promiseWhichWillBeResolved = new Promise((resolv, reject) => {
-  //   let i = 0;
-  //   while (i < 10000000)
-  //     i++;
-  //   console.log("Promeza...")
-  //   resolv();
-  // })
-
-  // console.log(promiseWhichWillBeResolved);
-
-  // let syncResult = deasyncPromise(promiseWhichWillBeResolved)
-
-  // try {
-  //   let syncResult = deasyncPromise(promiseWhichWillBeRejected)
-  // } catch (err) {
-  //   console.log(err)
-  // }
 
 })();
