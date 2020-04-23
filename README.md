@@ -138,13 +138,11 @@ The package allows you to access to a ref object directly without search, the pa
 	
 ```
 
-### More
+## More
 
 In this moment the package is un ultra mega archi prealpha. In the next weeks we will upload new cool features. Until that, we are hiring all types of recomendations to improve the package!
  
 
-```
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
