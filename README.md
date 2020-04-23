@@ -26,7 +26,7 @@ npm i --save mongoose-model-ts
 ```
 
 
-## Example: Lets code
+## Gets started
 
 ### With JS mongoose:
 
@@ -34,33 +34,116 @@ npm i --save mongoose-model-ts
 const  mongoose  =  require('mongoose');
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
+const { Editorial } = './editorial';
+const { Enemy } = './enemy';
 
-const  PersonSchema  =  new  Schema({
-	name: { type:  String },
-	age: { type:  Number, required:  false },
+const  HeroSchema  =  new  Schema({
+	name: { 
+		type:  String 
+	},
+	superpower: { 
+		type:  String, 
+		required:  true 
+	},
+	editorial: { 
+		type:  ObjectId, 
+		ref: 'Editorial' 
+	},
+	enemies: [{ 
+		type: ObjectId, 
+		ref: 'Enemy' 
+	}],
 })
 
-mongoose.model('Person', PersonSchema);
+mongoose.model('Hero', HeroSchema);
 ```
 
 ### With TS mongoose:
 ```ts
-import { prop, Model } from  'mongoose-model-ts'
+import { prop, Model, entity } from  'mongoose-model-ts'
+import { Editorial } from './editorial';
+import { Enemy } from './enemy';
 
-export  class  Person  extends  Model {
+@entity
+export  class  Hero  extends  Model {
 
 	@prop()
 	name:  string;
 
-	@prop({ required:  false })
-	age:  number;
+	@prop({ required:  true })
+	superpower:  string;
+
+	@prop({ ref: Editorial })
+	editorial:  Editorial;
+
+	@prop({ ref: Enemy })
+	enemies:  Enemy[];
+
 }
 ```
-#### How it works
+## How it works
 
-Mongoose TS map the properties of the model and create a schema in the metadata of the class. All is transparent for the developer and for this they don't need get worry about how its work.
+Mongoose TS map the properties of the model and create a schema in the metadata of the class. All is transparent for the developer and they don't need get worry about how its work.
 
+#### Create
 
+```ts
+	const hero = await Hero.create({name: 'Batman', superpower: 'Be cool' });
+```
+
+#### Find (One, many, byId)
+
+```ts
+	const query = { /* ... */ };
+	
+	const hero = await Hero.find(query);
+	const hero = await Hero.findByUd(/*id*/);
+	const hero = await Hero.findOne(query);
+```
+
+#### Save
+
+We can use Save for create or update if the record exist in the database.
+```ts
+	// SAVE NEW RECORD
+	const hero = new Hero;
+	hero.name = 'Superman';
+	hero.superpower = 'Too much to be fair';
+	await hero.save();
+	
+	// UPDATE OLD RECORD
+	const hero = await Hero.findByUd(/*id*/);
+	hero.superpower = 'new super amazing power';
+	hero.save();
+```
+
+#### Update
+
+The same as Save() function when the record exist.
+```ts
+	// UPDATE OLD RECORD
+	const hero = await Hero.findByUd(/*id*/);
+	hero.name = 'Another craze and cool name';
+	hero.update();
+```
+
+#### Autopopulation
+
+The package allows you to access to a ref object directly without search, the package search and populate automaticly.
+```ts
+	const hero = await Hero.findByUd(/*id*/);
+	
+	// This automaticly find the editorial and save this into editorial property
+	const editorial = hero.editorial.name;
+	
+```
+
+### More
+
+In this moment the package is un ultra mega archi prealpha. In the next weeks we will upload new cool features. Until that, we are hiring all types of recomendations to improve the package!
+ 
+
+```
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
