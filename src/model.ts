@@ -13,10 +13,11 @@ import { Proxify } from './proxy';
 
 /**
  * Future features:
+ *  - Autopopulate (Refs) -> FINISHED
+ *  - Tests
  *  - Plugins
  *  - Virtuals
  *  - Schema Methods
- *  - Autopopulate (Refs) -> FINISHED
  *  - Hooks
  *  - Properies edited flag
  */
@@ -256,7 +257,8 @@ export class Model extends Proxify {
 
     const child: T = new this();
 
-    // await child._model.findById(id)
+    // TODO: PATCH BECAUSE IF I REMOVE THIS, RETURN NULL
+    await child._model.findById(id)
 
     try {
       document = await child._model
@@ -267,6 +269,8 @@ export class Model extends Proxify {
     } catch (err) {
       return Promise.reject(err);
     }
+
+    console.log(document);
 
     return document ? Model.docToClass.call(this, document) as T : null;
   }
