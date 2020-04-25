@@ -29,5 +29,6 @@ import deasync = require('deasync');
   const foundModel = await Model.findById(oldModel.id);
 
   console.log("Final data: ", foundModel.singleRef);
+
   console.log("Final data: ", foundModel.getId('singleRef'));
 })();

@@ -14,7 +14,7 @@ import { Proxify } from './proxy';
 /**
  * Future features:
  *  - Autopopulate (Refs) -> FINISHED
- *  - Tests
+ *  - Do Tests -> FINISHED
  *  - Plugins
  *  - Virtuals
  *  - Schema Methods

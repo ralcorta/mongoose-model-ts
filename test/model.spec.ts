@@ -4,6 +4,9 @@ import 'jest-extended';
 
 import { Model } from './model'
 import { DbHandler } from './db-handler';
+import { ModelRef } from './modelRef';
+import { RefSchemaType } from '../src/types';
+import { Types } from 'mongoose';
 
 
 enum CommonConfig {
@@ -27,7 +30,7 @@ afterAll(async () => await DbHandler.closeDatabase());
 
 describe('Framework ', () => {
 
-  it('Create[Should_success_When_SaveFunctionIsUsed]', async () => {
+  it('Save[Should_success_When_SaveFunctionIsUsed]', async () => {
 
     const person = new Model({ commonString: "Rodrigo", commonNumber: 21 });
 
@@ -88,7 +91,7 @@ describe('Framework ', () => {
     expect(deletedModel).toBeNull();
   });
 
-  it('Delete[Should_success_When_DeleteManyFuncionIUsed]', async () => {
+  it('DeleteMany[Should_success_When_DeleteManyFuncionIUsed]', async () => {
     const promises = new Array();
 
     for (let i = 0; i < CommonConfig.records; i++) {
@@ -102,5 +105,28 @@ describe('Framework ', () => {
     const deletedsModel: Model[] = await Model.find();
 
     expect(deletedsModel).toBeEmpty();
+  });
+
+  it('Autopopulate[Should_success_When_AutopopulateByGettersIsUsed]', async () => {
+
+    const singleRef: ModelRef = await ModelRef.create({ commonString: 'Reference' });
+
+    const oldModel = await Model.create({ commonString: 'Rodrigo', commonNumber: 21, singleRef });
+
+    const foundModel = await Model.findById(oldModel.id);
+
+    expect(foundModel.singleRef).toMatchObject(singleRef);
+  });
+
+
+  it('Id[Should_success_When_GetIdFunctionIsUsedToGetOnlyStringId]', async () => {
+
+    const singleRef: ModelRef = await ModelRef.create({ commonString: 'Reference' });
+
+    const oldModel = await Model.create({ commonString: 'Rodrigo', commonNumber: 21, singleRef });
+
+    const foundModel = await Model.findById(oldModel.id);
+
+    expect(foundModel.getId('singleRef')).toBeInstanceOf(Types.ObjectId);
   });
 });
