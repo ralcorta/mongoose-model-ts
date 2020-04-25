@@ -20,20 +20,16 @@ export class Proxify {
       const schema = Reflect.getMetadata(ReflectSchema, target);
 
       if (schema[prop]?.ref) {
-        // const searchById = Reflect.getOwnMetadata(ReflectPivotKey, target);
 
-        // console.log(searchById)
-        // console.log("WTF:", searchById, searchById === true)
         if (target.pivotGetId === true)
           return target[prop];
 
-        const modelParent: MongooseModel<Document> = Reflect.getMetadata(ReflectModel, target);
-
         const modelCaller = model(schema[prop]?.ref);
+
+        const modelParent: MongooseModel<Document> = Reflect.getMetadata(ReflectModel, target);
 
         const result = Deasync.execCb.call(modelCaller, modelParent.findById, target[prop]);
 
-        // console.log("Shit?", Model.docToClass.call());
         const type = Reflect.getOwnMetadata(ReflectKeys.Type, target.constructor.prototype, prop);
 
         return type.docToClass.call(type, result);
