@@ -13,10 +13,11 @@ import { Proxify } from './proxy';
 
 /**
  * Future features:
+ *  - Autopopulate (Refs) -> FINISHED
+ *  - Tests
  *  - Plugins
  *  - Virtuals
  *  - Schema Methods
- *  - Autopopulate (Refs) -> FINISHED
  *  - Hooks
  *  - Properies edited flag
  */
@@ -268,6 +269,8 @@ export class Model extends Proxify {
     } catch (err) {
       return Promise.reject(err);
     }
+
+    console.log(document);
 
     return document ? Model.docToClass.call(this, document) as T : null;
   }

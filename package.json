@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand --detectOpenHandles ./test",
     "dev": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts",
     "start": "node dist/index",
     "webpack": "webpack --config webpack.config.ts",
@@ -13,6 +13,9 @@
     "watch-ts": "tsc -w src/index.ts",
     "watch-node": "nodemon dist/server.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript, Node\" -c \"yello.bold, cyan.bold\" \"npm run watch-ts\" \"npm run watch-node\""
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "author": "",
   "license": "ISC",
@@ -28,6 +31,7 @@
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "helmet": "^3.22.0",
+    "jest-extended": "^0.11.5",
     "mongoose": "^5.9.9",
     "nodemon": "^2.0.3",
     "pug": "^2.0.4",
@@ -42,6 +46,7 @@
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.6",
     "@types/helmet": "0.0.45",
+    "@types/jasmine": "^3.5.10",
     "@types/jest": "^25.2.1",
     "@types/mongoose": "^5.7.11",
     "@types/node": "^13.13.2",
@@ -49,6 +54,7 @@
     "babel-jest": "^25.4.0",
     "express": "^4.17.1",
     "jest": "^25.4.0",
+    "mongodb-memory-server": "^6.5.2",
     "ts-jest": "^25.4.0",
     "ts-loader": "^7.0.0",
     "typescript": "^3.8.3",
