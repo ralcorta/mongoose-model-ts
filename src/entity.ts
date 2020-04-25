@@ -5,7 +5,7 @@ import "reflect-metadata"
 import { RecordSchema } from './types';
 import { ReflectSchema, ReflectModel, ReflectKey } from './constants/symbols';
 import { SchemaDefinition, Schema, Model as MongooseModel, Document, models, model } from "mongoose";
-import { Initial } from "./constants/initial";
+import { PropMeta } from "./constants/initial";
 
 export function entity(target: Function) {
   const schema: RecordSchema = Reflect.getMetadata(ReflectSchema, target.prototype);
@@ -16,7 +16,7 @@ export function entity(target: Function) {
     ? model(target.name)
     : model(target.name, schemaMongoose);
 
-  Reflect.defineMetadata(ReflectKey, Initial.Key, target.prototype);
+  Reflect.defineMetadata(ReflectKey, PropMeta.Key, target.prototype);
 
   Reflect.defineMetadata(ReflectModel, doc, target.prototype);
 }

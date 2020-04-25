@@ -3,10 +3,10 @@
 import 'reflect-metadata'
 
 import * as _ from 'underscore'
-import { StaticThis } from './types';
+import { StaticThis, RefSchemaType } from './types';
 import { Document, Model as MongooseModel, Types } from 'mongoose';
-import { ReflectModel, ReflectKey, ReflectDoc } from './constants/symbols';
-import { Initial } from './constants/initial';
+import { ReflectModel, ReflectKey, ReflectDoc, ReflectPivotKey } from './constants/symbols';
+import { PropMeta } from './constants/initial';
 import { DeleteModel } from './interfaces/delete.interface';
 import { Proxify } from './proxy';
 
@@ -39,25 +39,10 @@ export class Model extends Proxify {
    */
   constructor(data: object = {}) {
     super();
-
     this._id = Types.ObjectId();
-
     Model.assign.call(this, data);
-
     const children: object = Reflect.getPrototypeOf(this);
-
-    Reflect.defineMetadata(ReflectKey, Initial.Key, children);
-  }
-
-  /**
-   * Assing all properties to object when this is created.
-   *
-   * @private
-   * @param {object} properties
-   * @memberof Model
-   */
-  private static assign(properties: object): void {
-    Object.assign(this, properties);
+    Reflect.defineMetadata(ReflectKey, PropMeta.Key, children);
   }
 
   /**
@@ -94,6 +79,77 @@ export class Model extends Proxify {
    */
   private get _model(): MongooseModel<Document> {
     return Reflect.getMetadata(ReflectModel, this) as MongooseModel<Document>;
+  }
+
+  /**
+   * Assing all properties to object when this is created.
+   *
+   * @private
+   * @param {object} properties
+   * @memberof Model
+   */
+  private static assign(properties: object): void {
+    Object.assign(this, properties);
+  }
+
+  /**
+   * Set metadata on model
+   *
+   * @private
+   * @param {(string | symbol)} where
+   * @param {*} data
+   * @param {*} classConstructor
+   * @memberof Model
+   */
+  private setMetadata(where: string | symbol, data: any, classConstructor: any): void {
+    Reflect.defineMetadata(where, data, classConstructor);
+  }
+
+  /**
+   * Get metadata on model
+   *
+   * @private
+   * @param {(string | symbol)} where
+   * @param {*} target
+   * @returns {void}
+   * @memberof Model
+   */
+  private getMetadata(where: string | symbol, target: any): void {
+    return Reflect.getOwnMetadata(where, target);
+  }
+
+  /**
+   * Execute a fucntion or get a prop value by condicion before and after
+   *
+   * @private
+   * @param {PropMeta} key
+   * @param {string} prop
+   * @param {boolean} [isFunction=false]
+   * @returns
+   * @memberof Model
+   */
+  private doByCondicitonKey(key: PropMeta, prop: string, isFunction: boolean = false) {
+    (this as any)[key] = true;
+    const result = (this as any)[prop];
+    const value = isFunction ? result() : result;
+    delete (this as any)[key];
+    return value;
+  }
+
+  /**
+   * Get the KEY from the property without autopopulate.
+   *
+   * @param {string} prop
+   * @returns {RefSchemaType}
+   * @memberof Model
+   */
+  public getId(prop: string): RefSchemaType {
+    const key = this.doByCondicitonKey(PropMeta.pivotGetId, prop);
+
+    if (!key)
+      return null;
+
+    return key
   }
 
   /**
@@ -269,8 +325,6 @@ export class Model extends Proxify {
     } catch (err) {
       return Promise.reject(err);
     }
-
-    console.log(document);
 
     return document ? Model.docToClass.call(this, document) as T : null;
   }

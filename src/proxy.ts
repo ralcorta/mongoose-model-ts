@@ -1,4 +1,4 @@
-import { ReflectSchema, ReflectModel } from './constants/symbols';
+import { ReflectSchema, ReflectModel, ReflectPivotKey } from './constants/symbols';
 import { Document, Model as MongooseModel, model } from 'mongoose';
 import { Deasync } from './utils/deasync';
 import { ReflectKeys } from './constants/reflect.keys';
@@ -16,8 +16,17 @@ export class Proxify {
 
   public get(target: any, prop: string): Promise<any> {
     if (this.hasOwnProperty(prop)) {
+
       const schema = Reflect.getMetadata(ReflectSchema, target);
+
       if (schema[prop]?.ref) {
+        // const searchById = Reflect.getOwnMetadata(ReflectPivotKey, target);
+
+        // console.log(searchById)
+        // console.log("WTF:", searchById, searchById === true)
+        if (target.pivotGetId === true)
+          return target[prop];
+
         const modelParent: MongooseModel<Document> = Reflect.getMetadata(ReflectModel, target);
 
         const modelCaller = model(schema[prop]?.ref);

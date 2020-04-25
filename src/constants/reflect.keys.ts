@@ -46,5 +46,11 @@ export enum ReflectKeys {
    * Storage Key Property of user (like _id)
    * -> Use only for a class
    */
-  Key = 'tsmodel:key'
+  Key = 'tsmodel:key',
+
+  /**
+   * Storage Key Property of user (like _id)
+   * -> Use only for a class
+   */
+  PivotKey = 'tsmodel:pivotkey'
 }
