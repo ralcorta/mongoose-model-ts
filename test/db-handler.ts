@@ -5,6 +5,13 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 
 const mongod = new MongoMemoryServer();
 
+/**
+ * Class done to handle a database in memory
+ * Only made for testing purposes
+ *
+ * @export
+ * @class DbHandler
+ */
 export class DbHandler {
 
   /**

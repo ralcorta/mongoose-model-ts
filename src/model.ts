@@ -20,6 +20,7 @@ import { Proxify } from './proxy';
  *  - Schema Methods
  *  - Hooks
  *  - Properies edited flag
+ *  - Custom Collections. 
  */
 export class Model extends Proxify {
 

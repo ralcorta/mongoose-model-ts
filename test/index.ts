@@ -2,33 +2,25 @@
 import * as mongoose from 'mongoose';
 import { Model } from './model'
 import { ModelRef } from './modelRef';
-import { resolve } from 'path';
-import { runLoopOnce } from 'deasync';
-import deasync = require('deasync');
-
-// async function ref() {
-//   try {
-
-//     const person = new Model({ name: 'Rodrigo', dog: new ModelRef({ name: 'Yeny' }) });
-
-//     console.log(person);
-
-//   } catch (error) {
-//     console.log("Error: ", error);
-//     return;
-//   }
-// }
+import { Collection } from '../src/collection';
 
 (async () => {
   await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "mongoose-model-ts" });
 
-  const singleRef: ModelRef = await ModelRef.create({ commonString: 'Reference' });
+  const models = [];
 
-  const oldModel = await Model.create({ commonString: 'Rodrigo', commonNumber: 21, singleRef });
+  for (let i = 0; i < 3; i++) {
+    models.push(new Model({ commonString: `Name ${i}`, commonNumber: i }));
+  }
 
-  const foundModel = await Model.findById(oldModel.id);
+  let collect;
+  try {
+    collect = new Collection<Model>(models);
+  } catch (error) {
+    console.log(error)
+  }
 
-  console.log("Final data: ", foundModel.singleRef);
+  // collect.push();
 
-  console.log("Final data: ", foundModel.getId('singleRef'));
+  console.log(collect.first())
 })();

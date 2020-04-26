@@ -28,7 +28,7 @@ afterEach(async () => await DbHandler.clearDatabase());
  */
 afterAll(async () => await DbHandler.closeDatabase());
 
-describe('Framework ', () => {
+describe('Model', () => {
 
   it('Save[Should_success_When_SaveFunctionIsUsed]', async () => {
 
