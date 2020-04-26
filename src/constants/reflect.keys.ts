@@ -58,5 +58,24 @@ export enum ReflectKeys {
    * Storage list of plugins
    * -> Use only on class
    */
-  Plugins = 'tsmodel:plugins'
+  Plugins = 'tsmodel:plugins',
+
+  /**
+   * Storage list of hooks
+   * -> Use only on class
+   */
+  Hooks = 'tsmodel:Hooks',
+
+  /**
+   * Storage list of pre hooks
+   * -> Use only on class
+   */
+  PreHooks = 'tsmodel:preHooks',
+
+  /**
+   * Storage list of post hooks
+   * -> Use only on class
+   */
+  PostHooks = 'tsmodel:preHooks',
+
 }

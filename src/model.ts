@@ -16,11 +16,11 @@ import { Proxify } from './proxy';
  *  - Autopopulate (Refs) -> FINISHED
  *  - Do Tests -> FINISHED
  *  - Custom Collections. -> FINISHED
- *  - Plugins
- *  - Virtuals
- *  - Schema Methods
+ *  - Plugins -> FINISHED
  *  - Hooks
  *  - Properies edited flag
+ *  - Schema Methods -> It's necesary? You can declare method in the class and that's fine.
+ *  - Virtuals -> It's necesary? You can declare a getter and setter in the class and that's fine
  */
 export class Model extends Proxify {
 

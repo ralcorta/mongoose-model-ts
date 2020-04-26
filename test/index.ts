@@ -9,9 +9,10 @@ import { Collection } from '../src/collection';
 
   const person = new Model({ commonString: "Rodrigo", commonNumber: 21 });
 
-  // person.save();
+  person.save();
 
-  // const result = await Model.findById(person.id);
+  // let result = await Model.findById(person.id);
+  // result = await Model.findById(person.id);
 
   // console.log(result);
 })();

@@ -12,3 +12,9 @@ export const ReflectKey = Symbol(ReflectKeys.Key);
 export const ReflectPivotKey = Symbol(ReflectKeys.PivotKey);
 
 export const ReflectPlugins = Symbol(ReflectKeys.Plugins);
+
+export const ReflectPreHooks = Symbol(ReflectKeys.PreHooks);
+
+export const ReflectPostHooks = Symbol(ReflectKeys.PostHooks);
+
+export const ReflectHooks = Symbol(ReflectKeys.Hooks);

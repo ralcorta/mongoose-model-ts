@@ -6,7 +6,6 @@ export function plugin(plugin: Func, options?: any) {
   return (target: any) => {
     const plugins: Plugin[] = Array.from(Reflect.getMetadata(ReflectPlugins, target) ?? []);
     plugins.push({ plugin, options });
-    console.log("Plugin: ", plugins)
     Reflect.defineMetadata(ReflectPlugins, plugins, target);
   };
 }
