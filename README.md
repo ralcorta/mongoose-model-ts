@@ -1,10 +1,10 @@
 # :rocket: Mongoose Model TS
 
-mongoose-model-ts is a package for Typescript node proyect to use mongoose in a type way.
+mongoose-model-ts is a package for Typescript node projects to use mongoose in a typed way.
 
 ## Getting Started
 
-Here is a basic example of how you can use the package:
+Here is a basic example of how you can use this package:
 
 ### Prerequisites
 
@@ -16,7 +16,7 @@ Here is a basic example of how you can use the package:
 
 ### Installing
 
-Download this package using npm
+You can download and install this package using npm:
 
 ```
 npm i --save mongoose-model-ts
@@ -80,7 +80,7 @@ export  class  Hero  extends  Model {
 ```
 ## How it works
 
-Mongoose TS map the properties of the model and create a schema in the metadata of the class. All is transparent for the developer and they don't need get worry about how its work.
+Mongoose TS maps the properties of the model and creates a schema in the metadata of the class. This is transparent to the developer as they don't need to worry about how it works.
 
 #### Create
 
@@ -100,7 +100,7 @@ Mongoose TS map the properties of the model and create a schema in the metadata 
 
 #### Save
 
-We can use Save for create or update if the record exist in the database.
+You can Save, Create or Update if the record exist in the database.
 ```ts
 	// SAVE NEW RECORD
 	const hero = new Hero;
@@ -108,7 +108,7 @@ We can use Save for create or update if the record exist in the database.
 	hero.superpower = 'Too much to be fair';
 	await hero.save();
 	
-	// UPDATE OLD RECORD
+	// UPDATE EXISTING RECORD
 	const hero = await Hero.findByUd(/*id*/);
 	hero.superpower = 'new super amazing power';
 	hero.save();
@@ -118,13 +118,13 @@ We can use Save for create or update if the record exist in the database.
 
 The same as Save() function when the record exist.
 ```ts
-	// UPDATE OLD RECORD
+	// UPDATE EXISTING RECORD
 	const hero = await Hero.findByUd(/*id*/);
 	hero.name = 'Another craze and cool name';
 	hero.update();
 ```
 
-#### Autopopulation
+#### Autofill
 
 The package allows you to access to a ref object directly without search, the package search and populate automaticly.
 ```ts
@@ -137,8 +137,8 @@ The package allows you to access to a ref object directly without search, the pa
 
 ## More
 
-In this moment the package is un ultra mega archi prealpha. In the next weeks we will upload new cool features. Until that, we are hiring all types of recomendations to improve the package!
- 
+In this moment the package is un ultra mega archi pre-alpha. In the next weeks new cool features will be uploaded.
+Until then, we are open to all recomendations to improve this package.
 
 ## License
 
