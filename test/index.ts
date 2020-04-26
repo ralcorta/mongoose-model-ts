@@ -7,12 +7,11 @@ import { Collection } from '../src/collection';
 (async () => {
   await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "mongoose-model-ts" });
 
-  const person = new Model({ commonString: "Rodrigo", commonNumber: 21 });
+  const singleRef = new ModelRef({ commonString: "Common" });
 
-  person.save();
+  const model = new Model({ commonString: "Rodrigo", commonNumber: 21, singleRef });
 
-  // let result = await Model.findById(person.id);
-  // result = await Model.findById(person.id);
+  model.save();
 
-  // console.log(result);
+  console.log(model);
 })();

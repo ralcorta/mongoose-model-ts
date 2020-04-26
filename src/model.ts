@@ -18,6 +18,7 @@ import { Proxify } from './proxy';
  *  - Custom Collections. -> FINISHED
  *  - Plugins -> FINISHED
  *  - General Hooks -> FINISHED
+ *  - Update Recursive
  *  - Properies edited flag
  *  - Schema Methods -> It's necesary? You can declare method in the class and that's fine.
  *  - Virtuals -> It's necesary? You can declare a getter and setter in the class and that's fine
