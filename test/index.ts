@@ -7,20 +7,11 @@ import { Collection } from '../src/collection';
 (async () => {
   await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "mongoose-model-ts" });
 
-  const models = [];
+  const person = new Model({ commonString: "Rodrigo", commonNumber: 21 });
 
-  for (let i = 0; i < 3; i++) {
-    models.push(new Model({ commonString: `Name ${i}`, commonNumber: i }));
-  }
+  // person.save();
 
-  let collect;
-  try {
-    collect = new Collection<Model>(models);
-  } catch (error) {
-    console.log(error)
-  }
+  // const result = await Model.findById(person.id);
 
-  // collect.push();
-
-  console.log(collect.first())
+  // console.log(result);
 })();

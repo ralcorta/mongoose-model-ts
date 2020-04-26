@@ -15,12 +15,12 @@ import { Proxify } from './proxy';
  * Future features:
  *  - Autopopulate (Refs) -> FINISHED
  *  - Do Tests -> FINISHED
+ *  - Custom Collections. -> FINISHED
  *  - Plugins
  *  - Virtuals
  *  - Schema Methods
  *  - Hooks
  *  - Properies edited flag
- *  - Custom Collections. 
  */
 export class Model extends Proxify {
 

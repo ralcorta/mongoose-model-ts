@@ -173,6 +173,11 @@ export interface ValidatorOptions {
   message?: string;
 }
 
+export interface Plugin<T = any> {
+  plugin: Func,
+  options: T
+}
+
 export type Validator =
   | ValidatorFunction
   | RegExp
