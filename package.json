@@ -60,6 +60,7 @@
     "ts-jest": "^25.4.0",
     "ts-loader": "^7.0.0",
     "typedoc": "^0.17.4",
+    "typedoc-neo-theme": "^1.0.8",
     "typescript": "^3.8.3",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",

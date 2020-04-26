@@ -1,0 +1,303 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>mongoose-model-ts</title>
+	<meta name="description" content="Documentation for mongoose-model-ts">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">mongoose-model-ts</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>mongoose-model-ts</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#rocket-mongoose-model-ts" id="rocket-mongoose-model-ts" style="color: inherit; text-decoration: none;">
+					<h1>:rocket: Mongoose Model TS</h1>
+				</a>
+				<p>mongoose-model-ts is a package for Typescript node proyect to use mongoose in a type way.</p>
+				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
+					<h2>Getting Started</h2>
+				</a>
+				<p>Here is a basic example of how you can use the package:</p>
+				<a href="#prerequisites" id="prerequisites" style="color: inherit; text-decoration: none;">
+					<h3>Prerequisites</h3>
+				</a>
+				<ul>
+					<li>TypeScript 3.7+</li>
+					<li>Node 8.10+</li>
+					<li>mongoose ^5.9.2</li>
+				</ul>
+				<a href="#installing" id="installing" style="color: inherit; text-decoration: none;">
+					<h3>Installing</h3>
+				</a>
+				<p>Download this package using npm</p>
+				<pre><code>npm i <span class="hljs-comment">--save mongoose-model-ts</span></code></pre>
+				<a href="#gets-started" id="gets-started" style="color: inherit; text-decoration: none;">
+					<h2>Gets started</h2>
+				</a>
+				<a href="#with-js-mongoose" id="with-js-mongoose" style="color: inherit; text-decoration: none;">
+					<h3>With JS mongoose:</h3>
+				</a>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span>  mongoose  =  <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose'</span>);
+<span class="hljs-keyword">const</span> { Schema } = mongoose;
+<span class="hljs-keyword">const</span> { ObjectId } = Schema.Types;
+<span class="hljs-keyword">const</span> { Editorial } = <span class="hljs-string">'./editorial'</span>;
+<span class="hljs-keyword">const</span> { Enemy } = <span class="hljs-string">'./enemy'</span>;
+
+<span class="hljs-keyword">const</span>  HeroSchema  =  <span class="hljs-keyword">new</span>  Schema({
+    <span class="hljs-attr">name</span>: { 
+        <span class="hljs-attr">type</span>:  <span class="hljs-built_in">String</span> 
+    },
+    <span class="hljs-attr">superpower</span>: { 
+        <span class="hljs-attr">type</span>:  <span class="hljs-built_in">String</span>, 
+        <span class="hljs-attr">required</span>:  <span class="hljs-literal">true</span> 
+    },
+    <span class="hljs-attr">editorial</span>: { 
+        <span class="hljs-attr">type</span>:  ObjectId, 
+        <span class="hljs-attr">ref</span>: <span class="hljs-string">'Editorial'</span> 
+    },
+    <span class="hljs-attr">enemies</span>: [{ 
+        <span class="hljs-attr">type</span>: ObjectId, 
+        <span class="hljs-attr">ref</span>: <span class="hljs-string">'Enemy'</span> 
+    }],
+})
+
+mongoose.model(<span class="hljs-string">'Hero'</span>, HeroSchema);</code></pre>
+				<a href="#with-ts-mongoose" id="with-ts-mongoose" style="color: inherit; text-decoration: none;">
+					<h3>With TS mongoose:</h3>
+				</a>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { prop, Model, entity } <span class="hljs-keyword">from</span>  <span class="hljs-string">'mongoose-model-ts'</span>
+<span class="hljs-keyword">import</span> { Editorial } <span class="hljs-keyword">from</span> <span class="hljs-string">'./editorial'</span>;
+<span class="hljs-keyword">import</span> { Enemy } <span class="hljs-keyword">from</span> <span class="hljs-string">'./enemy'</span>;
+
+<span class="hljs-meta">@entity</span>
+<span class="hljs-keyword">export</span>  <span class="hljs-keyword">class</span>  Hero  <span class="hljs-keyword">extends</span>  Model {
+
+    <span class="hljs-meta">@prop</span>()
+    name:  <span class="hljs-built_in">string</span>;
+
+    <span class="hljs-meta">@prop</span>({ required:  <span class="hljs-literal">true</span> })
+    superpower:  <span class="hljs-built_in">string</span>;
+
+    <span class="hljs-meta">@prop</span>({ ref: Editorial })
+    editorial:  Editorial;
+
+    <span class="hljs-meta">@prop</span>({ ref: Enemy })
+    enemies:  Enemy[];
+
+}</code></pre>
+				<a href="#how-it-works" id="how-it-works" style="color: inherit; text-decoration: none;">
+					<h2>How it works</h2>
+				</a>
+				<p>Mongoose TS map the properties of the model and create a schema in the metadata of the class. All is transparent for the developer and they don&#39;t need get worry about how its work.</p>
+				<a href="#create" id="create" style="color: inherit; text-decoration: none;">
+					<h4>Create</h4>
+				</a>
+				<pre><code class="language-ts">    <span class="hljs-keyword">const</span> hero = <span class="hljs-keyword">await</span> Hero.create({name: <span class="hljs-string">'Batman'</span>, superpower: <span class="hljs-string">'Be cool'</span> });</code></pre>
+				<a href="#find-one-many-byid" id="find-one-many-byid" style="color: inherit; text-decoration: none;">
+					<h4>Find (One, many, byId)</h4>
+				</a>
+				<pre><code class="language-ts">    <span class="hljs-keyword">const</span> query = { <span class="hljs-comment">/* ... */</span> };
+
+    <span class="hljs-keyword">const</span> hero = <span class="hljs-keyword">await</span> Hero.find(query);
+    <span class="hljs-keyword">const</span> hero = <span class="hljs-keyword">await</span> Hero.findByUd(<span class="hljs-comment">/*id*/</span>);
+    <span class="hljs-keyword">const</span> hero = <span class="hljs-keyword">await</span> Hero.findOne(query);</code></pre>
+				<a href="#save" id="save" style="color: inherit; text-decoration: none;">
+					<h4>Save</h4>
+				</a>
+				<p>We can use Save for create or update if the record exist in the database.</p>
+				<pre><code class="language-ts">    <span class="hljs-comment">// SAVE NEW RECORD</span>
+    <span class="hljs-keyword">const</span> hero = <span class="hljs-keyword">new</span> Hero;
+    hero.name = <span class="hljs-string">'Superman'</span>;
+    hero.superpower = <span class="hljs-string">'Too much to be fair'</span>;
+    <span class="hljs-keyword">await</span> hero.save();
+
+    <span class="hljs-comment">// UPDATE OLD RECORD</span>
+    <span class="hljs-keyword">const</span> hero = <span class="hljs-keyword">await</span> Hero.findByUd(<span class="hljs-comment">/*id*/</span>);
+    hero.superpower = <span class="hljs-string">'new super amazing power'</span>;
+    hero.save();</code></pre>
+				<a href="#update" id="update" style="color: inherit; text-decoration: none;">
+					<h4>Update</h4>
+				</a>
+				<p>The same as Save() function when the record exist.</p>
+				<pre><code class="language-ts">    <span class="hljs-comment">// UPDATE OLD RECORD</span>
+    <span class="hljs-keyword">const</span> hero = <span class="hljs-keyword">await</span> Hero.findByUd(<span class="hljs-comment">/*id*/</span>);
+    hero.name = <span class="hljs-string">'Another craze and cool name'</span>;
+    hero.update();</code></pre>
+				<a href="#autopopulation" id="autopopulation" style="color: inherit; text-decoration: none;">
+					<h4>Autopopulation</h4>
+				</a>
+				<p>The package allows you to access to a ref object directly without search, the package search and populate automaticly.</p>
+				<pre><code class="language-ts">    <span class="hljs-keyword">const</span> hero = <span class="hljs-keyword">await</span> Hero.findByUd(<span class="hljs-comment">/*id*/</span>);
+
+    <span class="hljs-comment">// This automaticly find the editorial and save this into editorial property</span>
+    <span class="hljs-keyword">const</span> editorial = hero.editorial.name;
+</code></pre>
+				<a href="#more" id="more" style="color: inherit; text-decoration: none;">
+					<h2>More</h2>
+				</a>
+				<p>In this moment the package is un ultra mega archi prealpha. In the next weeks we will upload new cool features. Until that, we are hiring all types of recomendations to improve the package!</p>
+				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+					<h2>License</h2>
+				</a>
+				<p>This project is licensed under the MIT License - see the <a href="LICENSE">LICENSE</a> file for details</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_collection_.html">&quot;collection&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_constants_hook_.html">&quot;constants/hook&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_constants_initial_.html">&quot;constants/initial&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_constants_reflect_keys_.html">&quot;constants/reflect.keys&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_constants_symbols_.html">&quot;constants/symbols&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_entity_.html">&quot;entity&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_hooks_.html">&quot;hooks&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_instance_loader_.html">&quot;instance.loader&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_interfaces_delete_interface_.html">&quot;interfaces/delete.interface&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_interfaces_hook_interface_.html">&quot;interfaces/hook.interface&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_interfaces_model_interface_.html">&quot;interfaces/model.interface&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_interfaces_proxy_interface_.html">&quot;interfaces/proxy.interface&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_model_.html">&quot;model&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_plugin_.html">&quot;plugin&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_prop_.html">&quot;prop&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_proxy_.html">&quot;proxy&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_types_.html">&quot;types&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_utils_deasync_.html">&quot;utils/deasync&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_utils_proxy_.html">&quot;utils/proxy&quot;</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

@@ -1,7 +1,4 @@
-
-# :warning: THIS PACKAGE IS UNDER DEVELOPING AND THIS IS NOT IN NPM REPOSITORY YET
-
-# :rocket: mongoose-model-ts
+# :rocket: Mongoose Model TS
 
 mongoose-model-ts is a package for Typescript node proyect to use mongoose in a type way.
 
