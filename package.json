@@ -64,7 +64,7 @@
     "typedoc-neo-theme": "^1.0.8",
     "typescript": "^3.8.3",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11",
+    "webpack-cli": "^3.3.12",
     "webpack-node-externals": "^1.7.2"
   }
 }
