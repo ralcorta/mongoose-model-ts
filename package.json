@@ -55,7 +55,7 @@
     "@types/node": "^13.13.2",
     "@types/underscore": "^1.9.4",
     "babel-jest": "^25.4.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "jest": "^25.4.0",
     "mongodb-memory-server": "^6.5.2",
     "ts-jest": "^25.4.0",
