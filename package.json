@@ -59,12 +59,12 @@
     "jest": "^25.4.0",
     "mongodb-memory-server": "^6.5.2",
     "ts-jest": "^25.4.0",
-    "ts-loader": "^7.0.0",
+    "ts-loader": "^9.4.2",
     "typedoc": "^0.17.4",
     "typedoc-neo-theme": "^1.0.8",
     "typescript": "^3.8.3",
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.12",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
     "webpack-node-externals": "^1.7.2"
   }
 }
